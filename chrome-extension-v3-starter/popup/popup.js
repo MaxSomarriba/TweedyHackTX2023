@@ -1,5 +1,6 @@
 let scrapeButton = document.getElementById('getTextButton');
 let textArea = document.getElementById('result');
+let x = document;
 
 scrapeButton.addEventListener('click', async ()=> {
     // Get current tab
@@ -10,10 +11,19 @@ scrapeButton.addEventListener('click', async ()=> {
     });
 })
 
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.text) {
+        textArea.textContent = request.text;
+    }
+})
+
 function scrapeFromPage() {
     let text = document.body.innerText;
     // alert(text);
-    textArea.innerHTML = "newText";
+    // textArea.textContent = "Hello";
+    let new_m = "new message";
+    chrome.runtime.sendMessage({text});
     // console.log(text);
     // div.innerHTML = text;
+    
 }
