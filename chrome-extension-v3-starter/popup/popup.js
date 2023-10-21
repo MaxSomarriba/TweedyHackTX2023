@@ -60,3 +60,14 @@ function DOMtoString(selector) {
     }
     return selector.outerHTML;
 }
+
+// DOM, the code that representation of the HTML and CSS
+// getElementbyID, we know the id we are looking for which is tweet text
+// make a list of different
+
+var words = text.split(" · ");
+  for (var i = 0; i < words.length; i++) {
+    var count = words[i].length - 2;
+    var last = words[i].charAt(words[i].length - 1);
+    return words[i][0] + count + last;
+  }
