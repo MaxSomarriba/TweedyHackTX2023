@@ -1,4 +1,5 @@
 let scrapeButton = document.getElementById('getTextButton');
+let textArea = document.getElementById('result');
 
 scrapeButton.addEventListener('click', async ()=> {
     // Get current tab
@@ -11,5 +12,8 @@ scrapeButton.addEventListener('click', async ()=> {
 
 function scrapeFromPage() {
     let text = document.body.innerText;
-    alert(text);
+    // alert(text);
+    textArea.innerHTML = "newText";
+    // console.log(text);
+    // div.innerHTML = text;
 }
