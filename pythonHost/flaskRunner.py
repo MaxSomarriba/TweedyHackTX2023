@@ -2,13 +2,13 @@ from flask import Flask, request, jsonify
 import evaluate
 import ast
 
-def get_seperateCaptionList(caption_array):
-    #["Ford", "BMW", "Fiat"]
-    output_list = ast.literal_eval(caption_array)
-    return output_list
+# def get_seperateCaptionList(caption_array):
+#     #["Ford", "BMW", "Fiat"]
+#     output_list = caption_array
+#     return output_list
 
 def get_toxicity(caption_list):
-    caption_list = get_seperateCaptionList(caption_list)
+    # caption_list = get_seperateCaptionList(caption_list)
     toxicity_list = toxicity.compute(predictions=caption_list)["toxicity"]
     return toxicity_list
 
