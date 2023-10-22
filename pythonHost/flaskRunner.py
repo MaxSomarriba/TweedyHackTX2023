@@ -20,7 +20,7 @@ def run_python_script():
     received_data = data.get('data', 'No data received')  # Access the 'data' key
 
     # Here, you can execute your Python script using 'received_data'
-    # result = "Received data: " + received_data
+    # result = received_data
     result = get_toxicity(received_data)
     return jsonify(result=result)
 
