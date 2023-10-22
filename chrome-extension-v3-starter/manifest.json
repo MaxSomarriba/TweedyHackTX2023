@@ -4,9 +4,9 @@
     "description": "A minimal example of a chrome extension using manifest v3",
     "version": "0.0.1",
     "icons": {
-        "16": "logo/logo-16.png",
-        "48": "logo/logo-48.png",
-        "128": "logo/logo-128.png"
+        "16": "logo/TweedyLogo16.png",
+        "48": "logo/TweedyLogo48.png",
+        "128": "logo/TweedyLogo128.png"
     },
     "options_page": "settings/settings.html",
     "action": {
