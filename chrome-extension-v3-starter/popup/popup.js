@@ -31,6 +31,12 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         if (response.ok) {
             const responseData = await response.json();
             alert(responseData.result);
+            let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+            chrome.scripting.executeScript({
+                target: { tabId: tab.id },
+                func: modifyPage,
+                args: [responseData.result],
+            });
         } else {
             resultDiv.textContent = 'Error executing Python script';
         }
@@ -43,11 +49,12 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     // perform extract text with span again with new boolean array
     // match up indices 
     // instead of doing stuff to an array just change style
-    // modifyPage(responseData.result);
-    textArea.textContent = request.textArray;
+    // alert("test");
+    // textArea.textContent = request.textArray;
 })
 
-function modifyPage(scores_bool_array) {
+function modifyPage(scores_array) {
+    // alert(scores_array);
     // Get all elements with the attribute 'data-testid="tweetText"'
     var tweetTextElements = document.querySelectorAll('[data-testid="tweetText"]');
     var index = 0;
@@ -56,10 +63,12 @@ function modifyPage(scores_bool_array) {
     function extractTextWithSpan(element) {
         if (element.nodeType === Node.ELEMENT_NODE) {
             if (element.tagName === 'SPAN') {
-                if (scores_bool_array[index] > .01) {
+                if (scores_array[index] > 0.01) {
                     element.style.color = 'red';
                 }
                 index++;
+
+                // element.style.color = 'red';
             }
             for (var i = 0; i < element.childNodes.length; i++) {
                 extractTextWithSpan(element.childNodes[i]);
