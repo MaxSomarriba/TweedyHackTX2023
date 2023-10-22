@@ -18,6 +18,8 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         const url = 'http://127.0.0.1:5000/run_python_script';  // Replace with your server's URL
         const data = { data: array };
 
+        
+
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -95,7 +97,6 @@ function scrapeFromPage() {
     tweetTextElements.forEach(function (tweetTextElement) {
         extractTextWithSpan(tweetTextElement, textArray);
     });
-
     chrome.runtime.sendMessage({textArray});
 }
 
