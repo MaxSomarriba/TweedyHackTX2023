@@ -1,7 +1,17 @@
 let scrapeButton = document.getElementById('getTextButton');
-let textArea = document.getElementById('result');
 let x = document;
-let maxButton = document.getElementById('maxButton');
+
+
+const slider = document.getElementById("slider");
+const sliderValue = document.getElementById("sliderValue");
+
+// Display the initial value
+sliderValue.textContent = slider.value;
+
+// Update the displayed value when the slider is moved
+slider.addEventListener("input", function () {
+    sliderValue.textContent = slider.value;
+});
 
 scrapeButton.addEventListener('click', async ()=> {
     // Get current tab
@@ -14,11 +24,11 @@ scrapeButton.addEventListener('click', async ()=> {
 
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     var array = request.textArray;
+    if(request.greeting !== "hello"){
     try {
         const url = 'http://127.0.0.1:5000/run_python_script';  // Replace with your server's URL
         const data = { data: array };
         // alert(array);
-        
 
         const response = await fetch(url, {
             method: 'POST',
@@ -30,7 +40,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 
         if (response.ok) {
             const responseData = await response.json();
-            // alert(responseData.result);
+            alert(responseData.result);
             let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
             chrome.scripting.executeScript({
                 target: { tabId: tab.id },
@@ -51,15 +61,30 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     // instead of doing stuff to an array just change style
     // alert("test");
     // textArea.textContent = request.textArray;
+}
 })
 
-function modifyPage(scores_array) {
+async function modifyPage(scores_array) {
     const tweetTextElements = document.querySelectorAll('[data-testid="tweetText"]');
     var index = 0;
-
+    // const sliderValue = document.getElementById("sliderValue");
+    const response = await chrome.runtime.sendMessage({greeting: "hello"});
+    // do something with response here, not outside the function
+    console.log(response);
+    console.log(tweetTextElements);
+    // console.log("SV: " + sliderValue);
     // Loop through the matching elements
     tweetTextElements.forEach(function (tweetTextElement) {
-        if (scores_array[index] > 0.1) {
+        console.log("in for loop");
+        console.log("score_array: ");
+        console.log("score_array 0: " + scores_array[0]); 
+        console.log("response type: " + typeof response);
+        console.log("response.farwell: " + response.farewell);
+        console.log("scores_array[index]: " + scores_array[index]);
+        console.log("response.farwell/100: " + parseFloat(response.farewell)/100);
+        if (scores_array[index] > parseFloat(response.farewell)/100) {
+            console.log("score_array at index: " + scores_array[index]); 
+            console.log("blurring");
             // tweetTextElement.style.color = "transparent";
             // // tweetTextElement.style.textShadow = "0 0 10px rgba(0, 0, 0, .5)";
             // tweetTextElement.style.backgroundClip = "text";
@@ -67,8 +92,21 @@ function modifyPage(scores_array) {
             tweetTextElement.style.filter = "blur(5px)";
             
         }
+        index++;
     });
 }
+
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+      console.log(sender.tab ?
+                  "from a content script:" + sender.tab.url :
+                  "from the extension");
+      if (request.greeting === "hello"){
+        const sliderValue = document.getElementById("sliderValue");
+        sendResponse({farewell: sliderValue.textContent});
+      }
+      return true;
+    })
 
 function scrapeFromPage() {
     // Get all elements with the attribute 'data-testid="tweetText"'

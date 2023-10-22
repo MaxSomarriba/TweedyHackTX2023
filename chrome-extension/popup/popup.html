@@ -4,16 +4,27 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="popup.css">
     <title>Tweety: X Toxicity Censor</title>
-    
+    <style>
+        /* Center the content within the div */
+        .centered-content {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    
-    This is the <span class="special-text">HTML</span> body of the addon.
-    <button id="getTextButton">Get Text</button>
-    <button id="maxButton"> MAX BUTTON</button>
-    <div id="result">Current Text</div>
+    <div class="centered-content">
+        Welcome to <span class="special-text">Tweety</span>, your go to Chrome Extension for a safe Twitter experience.
+        <br>
+        <br>
+        <label for="slider">Toxicity Threshold:</label>
+        <input type="range" id="slider" name="slider" min="1" max="99" step="1" value="50">
+        <span id="sliderValue">50</span>
+        <br>
+        <br>
+        <button id="getTextButton">Check Page</button>
 
+        
+    </div>
     <script src="popup.js"></script>
 </body>
-
 </html>
