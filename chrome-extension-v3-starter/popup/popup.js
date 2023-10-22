@@ -38,7 +38,39 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         console.error('Error:', error);
         resultDiv.textContent = 'Error executing Python script';
     }
+
+    // create boolean array
+    // perform extract text with span again with new boolean array
+    // match up indices 
+    // instead of doing stuff to an array just change style
+    // modifyPage(responseData.result);
+    textArea.textContent = request.textArray;
 })
+
+function modifyPage(scores_bool_array) {
+    // Get all elements with the attribute 'data-testid="tweetText"'
+    var tweetTextElements = document.querySelectorAll('[data-testid="tweetText"]');
+    var index = 0;
+
+    // Function to extract text from elements and differentiate by <span> elements
+    function extractTextWithSpan(element) {
+        if (element.nodeType === Node.ELEMENT_NODE) {
+            if (element.tagName === 'SPAN') {
+                if (scores_bool_array[index] > .01) {
+                    element.style.color = 'red';
+                }
+                index++;
+            }
+            for (var i = 0; i < element.childNodes.length; i++) {
+                extractTextWithSpan(element.childNodes[i]);
+            }
+        }
+    }
+    //Iterate through elements with 'data-testid="tweetText"'
+    tweetTextElements.forEach(function (tweetTextElement) {
+        extractTextWithSpan(tweetTextElement);
+    });
+}
 
 function scrapeFromPage() {
     // Get all elements with the attribute 'data-testid="tweetText"'
@@ -49,6 +81,8 @@ function scrapeFromPage() {
         if (element.nodeType === Node.ELEMENT_NODE) {
             if (element.tagName === 'SPAN') {
                 textArray.push(element.textContent.trim());
+
+                // element.style.color = 'red';
             }
             for (var i = 0; i < element.childNodes.length; i++) {
                 extractTextWithSpan(element.childNodes[i], textArray);
