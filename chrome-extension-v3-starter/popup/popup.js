@@ -17,7 +17,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     try {
         const url = 'http://127.0.0.1:5000/run_python_script';  // Replace with your server's URL
         const data = { data: array };
-
+        alert(array);
         
 
         const response = await fetch(url, {
